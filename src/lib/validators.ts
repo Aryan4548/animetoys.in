@@ -12,6 +12,14 @@ export const loginSchema = z.object({
   password: z.string().min(1, "Password is required"),
 });
 
+// A logged-in customer editing their own name/phone from /account/settings.
+// Email and password are intentionally out of scope here (password change
+// needs a separate current-password-verification flow).
+export const profileUpdateSchema = z.object({
+  name: z.string().trim().min(2, "Name is too short").max(80),
+  phone: z.string().trim().max(20).optional().or(z.literal("")),
+});
+
 export const addressSchema = z.object({
   label: z.string().trim().max(40).default("Home"),
   fullName: z.string().trim().min(2).max(80),

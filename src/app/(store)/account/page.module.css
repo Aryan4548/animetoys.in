@@ -92,12 +92,13 @@
 
 .quickGrid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 14px;
   margin-top: 20px;
 }
 
 .quickCard {
+  position: relative;
   padding: 16px;
   display: flex;
   flex-direction: column;
@@ -134,18 +135,55 @@
   color: var(--color-accent-green);
 }
 
+.quickIconPurple {
+  background: #f3e8ff;
+  color: #9333ea;
+}
+
 .quickTitle {
   font-size: 14px;
   font-weight: 700;
+  padding-right: 18px;
 }
 
 .quickDesc {
   font-size: 12px;
   color: var(--color-ink-soft);
   margin-top: -6px;
+  padding-right: 18px;
 }
 
-@media (max-width: 560px) {
+.chevron {
+  position: absolute;
+  bottom: 14px;
+  right: 14px;
+  color: var(--color-ink-soft);
+}
+
+.logoutRow {
+  width: 100%;
+  margin-top: 14px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-danger);
+  cursor: pointer;
+  transition: box-shadow 0.15s ease;
+}
+
+.logoutRow:hover {
+  box-shadow: var(--shadow-pop);
+}
+
+.logoutRow .chevron {
+  position: static;
+  margin-left: auto;
+}
+
+@media (max-width: 720px) {
   .quickGrid {
     grid-template-columns: 1fr 1fr;
   }
