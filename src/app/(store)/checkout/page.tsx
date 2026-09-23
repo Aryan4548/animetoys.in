@@ -42,7 +42,11 @@ export default function CheckoutPage() {
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showForm, setShowForm] = useState(false);
   const [form, setForm] = useState(emptyForm);
-  const [paymentMethod, setPaymentMethod] = useState<"COD" | "RAZORPAY">("COD");
+  // Razorpay was never wired up to an actual payment gateway — it showed as
+  // a placeholder ("payment-pending until Razorpay keys are configured")
+  // and has been dropped from checkout, so Cash on Delivery is the only
+  // method now.
+  const [paymentMethod] = useState<"COD">("COD");
   const [placing, setPlacing] = useState(false);
   const [error, setError] = useState("");
 
@@ -210,20 +214,11 @@ export default function CheckoutPage() {
         )}
 
         <h2 style={{ fontSize: 18, marginBottom: 12 }}>Payment Method</h2>
-        <div className={`${styles.paymentOption} ${paymentMethod === "COD" ? styles.paymentOptionActive : ""}`} onClick={() => setPaymentMethod("COD")}>
-          <input type="radio" checked={paymentMethod === "COD"} onChange={() => setPaymentMethod("COD")} />
+        <div className={`${styles.paymentOption} ${styles.paymentOptionActive}`}>
+          <input type="radio" checked readOnly />
           <div>
-            <strong>Cash on Delivery</strong>
-            <p style={{ fontSize: 12, color: "var(--color-ink-soft)" }}>Pay when your order arrives.</p>
-          </div>
-        </div>
-        <div className={`${styles.paymentOption} ${paymentMethod === "RAZORPAY" ? styles.paymentOptionActive : ""}`} onClick={() => setPaymentMethod("RAZORPAY")}>
-          <input type="radio" checked={paymentMethod === "RAZORPAY"} onChange={() => setPaymentMethod("RAZORPAY")} />
-          <div>
-            <strong>Pay Online (Razorpay)</strong>
-            <p style={{ fontSize: 12, color: "var(--color-ink-soft)" }}>
-              Card / UPI / Netbanking. Order is recorded as payment-pending until Razorpay keys are configured by the store.
-            </p>
+            <strong>Payment after packing</strong>
+            <p style={{ fontSize: 12, color: "var(--color-ink-soft)" }}>Our team will contact you for the payments</p>
           </div>
         </div>
 

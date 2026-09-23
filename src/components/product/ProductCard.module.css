@@ -17,14 +17,20 @@
 .imageWrap {
   position: relative;
   aspect-ratio: 1 / 1;
-  background: #f1f0ec;
+  /* Slightly deeper than the card's own #f1f0ec background so the letterbox
+     bars left by `object-fit: contain` below read as an intentional matte,
+     not a mis-sized image. */
+  background: #e9e7e1;
   overflow: hidden;
 }
 
 .imageWrap img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  /* `contain` (not `cover`) so the full product photo always shows — a
+     `cover` crop was cutting off figures/boxes that aren't perfectly
+     square. The gray backdrop above fills the resulting letterbox bars. */
+  object-fit: contain;
 }
 
 .badges {

@@ -36,7 +36,7 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
   return (
     <Link href={`/product/${product.slug}`} className={styles.card}>
       <div className={styles.imageWrap}>
-        <Image src={image} alt={product.name} fill sizes="(max-width: 640px) 50vw, 22vw" style={{ objectFit: "cover" }} unoptimized />
+        <Image src={image} alt={product.name} fill sizes="(max-width: 640px) 50vw, 22vw" style={{ objectFit: "contain" }} unoptimized />
         <div className={styles.badges}>
           {product.newArrival && <span className="badge badge-new">New</span>}
           {product.isPreorder && <span className="badge badge-preorder">Preorder</span>}
