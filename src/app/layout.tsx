@@ -35,6 +35,12 @@ export const metadata: Metadata = {
     description:
       "Wholesale supplier of anime figures, gifts and toys, operating from Mumbai. 100% original merchandise at low-margin, competitive pricing.",
   },
+  // Proves ownership of animetoys.in to Google Search Console (renders as
+  // <meta name="google-site-verification" content="..." /> in <head>) so
+  // the sitemap can be submitted and indexing can be requested.
+  verification: {
+    google: "RXu63xU2Ybv7qUd4-094QRLYV_2Rf2CrriEVuert2W4",
+  },
 };
 
 const organizationJsonLd = {
