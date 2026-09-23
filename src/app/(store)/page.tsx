@@ -123,7 +123,7 @@ export default async function HomePage() {
         <div className="container">
           <div className="section-head">
             <div>
-              <div className="section-eyebrow">Fresh drops, straight from Japan</div>
+              <div className="section-eyebrow">Fresh Drops — Made to Stand Out</div>
               <h2 style={{ fontSize: 26 }}>New Arrivals ✦</h2>
             </div>
             <Link href="/shop?newArrival=true" className="btn btn-outline btn-sm">

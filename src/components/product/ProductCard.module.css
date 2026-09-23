@@ -162,6 +162,40 @@
   cursor: not-allowed;
 }
 
+.qtyStepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+}
+
+.qtyStepper button {
+  width: 32px;
+  height: 32px;
+  border: none;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  color: var(--color-ink);
+  flex-shrink: 0;
+}
+
+.qtyStepper button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+.qtyStepper span {
+  flex: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+}
+
 .grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

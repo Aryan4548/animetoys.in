@@ -13,11 +13,12 @@ import { computeInventoryStatus } from "@/lib/productStatus";
 import { getDiscountPercent } from "@/lib/pricing";
 
 export default function ProductCard({ product }: { product: ProductListItem }) {
-  const { addItem } = useCart();
+  const { items, addItem, updateItem } = useCart();
   const { user } = useSession();
   const router = useRouter();
   const pathname = usePathname();
   const [adding, setAdding] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const image = product.images?.[0] || "/placeholder-product.svg";
   // Computed here rather than trusted from `product.inventoryStatus` /
   // `product.discountPercent` — see lib/productStatus.ts for why those
@@ -25,6 +26,12 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
   const inventoryStatus = computeInventoryStatus(product.stock, product.reserved, product.lowStockThreshold, product.isPreorder);
   const outOfStock = inventoryStatus === "OUT_OF_STOCK";
   const discountPercent = getDiscountPercent(product.mrp, product.price);
+
+  // Once this product is in the cart, the card swaps the badge+add-button
+  // footer for a −/qty/+ stepper so someone can bump the quantity without
+  // leaving the grid — mirrors the same capping logic as the product page.
+  const cartQty = items.find((i) => i.productId === product._id)?.quantity || 0;
+  const available = Math.max(0, product.stock - product.reserved);
 
   async function handleAdd(e: React.MouseEvent) {
     e.preventDefault();
@@ -39,6 +46,18 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
       await addItem(product._id, 1);
     } finally {
       setAdding(false);
+    }
+  }
+
+  async function handleStep(e: React.MouseEvent, nextQty: number) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (updating) return;
+    setUpdating(true);
+    try {
+      await updateItem(product._id, nextQty);
+    } finally {
+      setUpdating(false);
     }
   }
 
@@ -66,22 +85,40 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
           </div>
         )}
         <div className={styles.footerRow}>
-          <span className={`badge badge-${inventoryStatus.toLowerCase().replace(/_/g, "")}`}>
-            {product.isPreorder
-              ? "Preorder"
-              : outOfStock
-              ? "Out of stock"
-              : inventoryStatus === "LOW_STOCK"
-              ? "Low stock"
-              : "In stock"}
-          </span>
-          <button className={styles.cartBtn} onClick={handleAdd} disabled={outOfStock || adding} aria-label="Add to cart">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-              <path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6" strokeLinecap="round" strokeLinejoin="round" />
-              <circle cx="9" cy="21" r="1.4" />
-              <circle cx="18" cy="21" r="1.4" />
-            </svg>
-          </button>
+          {cartQty > 0 ? (
+            <div className={styles.qtyStepper}>
+              <button onClick={(e) => handleStep(e, cartQty - 1)} disabled={updating} aria-label="Decrease quantity">
+                −
+              </button>
+              <span>{cartQty}</span>
+              <button
+                onClick={(e) => handleStep(e, product.isPreorder ? cartQty + 1 : Math.min(available, cartQty + 1))}
+                disabled={updating || (!product.isPreorder && cartQty >= available)}
+                aria-label="Increase quantity"
+              >
+                +
+              </button>
+            </div>
+          ) : (
+            <>
+              <span className={`badge badge-${inventoryStatus.toLowerCase().replace(/_/g, "")}`}>
+                {product.isPreorder
+                  ? "Preorder"
+                  : outOfStock
+                  ? "Out of stock"
+                  : inventoryStatus === "LOW_STOCK"
+                  ? "Low stock"
+                  : "In stock"}
+              </span>
+              <button className={styles.cartBtn} onClick={handleAdd} disabled={outOfStock || adding} aria-label="Add to cart">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6" strokeLinecap="round" strokeLinejoin="round" />
+                  <circle cx="9" cy="21" r="1.4" />
+                  <circle cx="18" cy="21" r="1.4" />
+                </svg>
+              </button>
+            </>
+          )}
         </div>
       </div>
     </Link>
