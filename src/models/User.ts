@@ -19,7 +19,16 @@ export type UserRole = "customer" | "admin";
 export interface IUser extends mongoose.Document {
   name: string;
   email: string;
-  passwordHash: string;
+  // Optional because a Google-only account (see /api/auth/google/callback)
+  // never sets a password — `select: false` below means this is still
+  // omitted from ordinary reads either way; callers that need it explicitly
+  // `.select("+passwordHash")` like the password-login route does.
+  passwordHash?: string;
+  // Google's stable per-account id ("sub" claim), set the first time
+  // someone signs in with "Continue with Google". Sparse so plenty of
+  // password-only accounts can all have no googleId without colliding on
+  // the unique index.
+  googleId?: string;
   phone?: string;
   role: UserRole;
   addresses: IAddress[];
@@ -58,7 +67,10 @@ const UserSchema = new Schema<IUser>(
       trim: true,
       index: true,
     },
-    passwordHash: { type: String, required: true, select: false },
+    // Not `required` — a Google-only account has no password at all (see
+    // IUser.passwordHash above).
+    passwordHash: { type: String, select: false },
+    googleId: { type: String, unique: true, sparse: true, index: true },
     phone: { type: String, trim: true },
     role: { type: String, enum: ["customer", "admin"], default: "customer", index: true },
     addresses: { type: [AddressSchema], default: [] },

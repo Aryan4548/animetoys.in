@@ -21,6 +21,13 @@ export async function POST(req: NextRequest) {
     const user = await User.findOne({ email: data.email }).select("+passwordHash");
     if (!user || !user.isActive) return jsonError("Invalid email or password.", 401);
 
+    // A Google-only account (created via "Continue with Google") has no
+    // password to check against — verifyPassword would just throw on
+    // bcrypt.compare(plain, undefined).
+    if (!user.passwordHash) {
+      return jsonError("This account uses Google sign-in. Please continue with Google instead.", 401);
+    }
+
     const valid = await verifyPassword(data.password, user.passwordHash);
     if (!valid) return jsonError("Invalid email or password.", 401);
 

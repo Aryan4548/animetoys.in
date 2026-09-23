@@ -160,6 +160,10 @@ export default function ProductDetailClient({ product, rating }: { product: Full
   }
 
   async function handleAddToCart() {
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent(`/product/${product.slug}`)}`);
+      return;
+    }
     setAdding(true);
     try {
       await addItem(product._id, qty);

@@ -67,6 +67,14 @@ export async function GET() {
 
 export async function POST(req: NextRequest) {
   try {
+    // Adding to cart now requires an account (Google or email/password) —
+    // enforced here too, not just by the "Add to Cart" buttons hiding
+    // behind a login redirect on the frontend, so a direct API call can't
+    // bypass it either. GET/PUT/DELETE below stay open to guests since
+    // they only ever touch a cart that a login-gated POST already created.
+    const session = await getSession();
+    if (!session) return jsonError("Please log in to add items to your cart.", 401);
+
     await connectDB();
     const body = await req.json();
     const { productId, quantity } = addSchema.parse(body);

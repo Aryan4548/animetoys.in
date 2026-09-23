@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import styles from "../login/page.module.css";
 import { useSession } from "@/components/providers/SessionProvider";
 import { useCart } from "@/components/providers/CartProvider";
+import GoogleIcon from "@/components/icons/GoogleIcon";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -43,6 +44,13 @@ export default function RegisterPage() {
       <div className={`card ${styles.card}`}>
         <h1>Create your account</h1>
         <p className={styles.subtitle}>Join the collector community.</p>
+        <a href="/api/auth/google" className={styles.googleBtn}>
+          <GoogleIcon />
+          Continue with Google
+        </a>
+        <div className={styles.divider}>
+          <span>or</span>
+        </div>
         <form onSubmit={handleSubmit}>
           <div className="form-field">
             <label>Full Name</label>

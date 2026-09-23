@@ -5,13 +5,18 @@ import Image from "next/image";
 import styles from "./ProductCard.module.css";
 import { formatINR } from "@/lib/format";
 import { useCart } from "@/components/providers/CartProvider";
+import { useSession } from "@/components/providers/SessionProvider";
 import type { ProductListItem } from "@/types";
 import { useState } from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { computeInventoryStatus } from "@/lib/productStatus";
 import { getDiscountPercent } from "@/lib/pricing";
 
 export default function ProductCard({ product }: { product: ProductListItem }) {
   const { addItem } = useCart();
+  const { user } = useSession();
+  const router = useRouter();
+  const pathname = usePathname();
   const [adding, setAdding] = useState(false);
   const image = product.images?.[0] || "/placeholder-product.svg";
   // Computed here rather than trusted from `product.inventoryStatus` /
@@ -25,6 +30,10 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
     e.preventDefault();
     e.stopPropagation();
     if (outOfStock || adding) return;
+    if (!user) {
+      router.push(`/login?next=${encodeURIComponent(pathname)}`);
+      return;
+    }
     setAdding(true);
     try {
       await addItem(product._id, 1);
