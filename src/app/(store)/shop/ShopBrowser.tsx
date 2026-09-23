@@ -1,21 +1,41 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import styles from "./page.module.css";
 import { ProductGrid } from "@/components/product/ProductCard";
 import type { ProductListItem, CategoryItem, BrandItem } from "@/types";
 
-export default function ShopBrowser() {
+interface Props {
+  initialProducts: ProductListItem[];
+  initialCategories: CategoryItem[];
+  initialBrands: BrandItem[];
+  initialPagination: { page: number; pages: number; total: number };
+}
+
+export default function ShopBrowser({
+  initialProducts,
+  initialCategories,
+  initialBrands,
+  initialPagination,
+}: Props) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const [products, setProducts] = useState<ProductListItem[]>([]);
-  const [categories, setCategories] = useState<CategoryItem[]>([]);
-  const [brands, setBrands] = useState<BrandItem[]>([]);
-  const [pagination, setPagination] = useState({ page: 1, pages: 1, total: 0 });
-  const [loading, setLoading] = useState(true);
+  // Seeded from the server-rendered page (see shop/page.tsx) so the first
+  // paint — and what Googlebot sees before any client JS runs — already
+  // shows real products instead of an empty "Loading..." grid. The effects
+  // below still re-fetch client-side, but only in response to the visitor
+  // changing a filter/sort/page after the initial load.
+  const [products, setProducts] = useState<ProductListItem[]>(initialProducts);
+  // Never changes after mount — see the comment below, near where the old
+  // client-side fetch for these used to live.
+  const categories = initialCategories;
+  const brands = initialBrands;
+  const [pagination, setPagination] = useState(initialPagination);
+  const [loading, setLoading] = useState(false);
   const [filtersOpen, setFiltersOpen] = useState(false);
+  const isFirstProductsRun = useRef(true);
 
   const category = searchParams.get("category") || "";
   const brand = searchParams.get("brand") || "";
@@ -25,17 +45,18 @@ export default function ShopBrowser() {
   const isPreorder = searchParams.get("isPreorder") === "true";
   const page = Number(searchParams.get("page") || 1);
 
-  useEffect(() => {
-    Promise.all([
-      fetch("/api/categories").then((r) => r.json()),
-      fetch("/api/brands").then((r) => r.json()),
-    ]).then(([c, b]) => {
-      setCategories(c.categories || []);
-      setBrands(b.brands || []);
-    });
-  }, []);
+  // Categories/brands (the sidebar filter lists) come from the server as
+  // initialCategories/initialBrands and don't depend on the active filters,
+  // so — unlike the products list below — there's nothing to re-fetch here
+  // client-side; `categories`/`brands` state never changes after mount.
 
   useEffect(() => {
+    // Skip on mount — the server already fetched products for the current
+    // filters/page and passed them in as initialProducts.
+    if (isFirstProductsRun.current) {
+      isFirstProductsRun.current = false;
+      return;
+    }
     setLoading(true);
     const params = new URLSearchParams();
     if (category) params.set("category", category);
