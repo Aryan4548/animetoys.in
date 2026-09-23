@@ -139,7 +139,7 @@ export default function Header() {
 
         <Link href="/" className={styles.logo}>
           <span className={styles.logoMark}>
-            <Image src="/logo-icon.png" alt="" width={26} height={20} unoptimized />
+            <Image src="/logo-icon.png" alt="" width={26} height={20} />
           </span>
           <span className={styles.logoText}>
             <span className={styles.logoTitle}>Anime &amp; Toy Universe</span>
@@ -210,7 +210,7 @@ export default function Header() {
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
               <span className={styles.logo}>
                 <span className={styles.logoMark}>
-                  <Image src="/logo-icon.png" alt="" width={26} height={20} unoptimized />
+                  <Image src="/logo-icon.png" alt="" width={26} height={20} />
                 </span>
                 <span className={styles.logoText}>
                   <span className={styles.logoTitle}>Anime &amp; Toy Universe</span>

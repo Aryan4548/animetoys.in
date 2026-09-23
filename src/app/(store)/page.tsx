@@ -9,8 +9,18 @@ import { ProductGrid } from "@/components/product/ProductCard";
 import type { ProductListItem, CategoryItem } from "@/types";
 import { SITE_INFO } from "@/lib/siteInfo";
 
+// Homepage title/description are set explicitly (as an absolute title,
+// bypassing the "%s | Anime & Toy Universe" template) rather than left to
+// inherit the root layout default, so this — the page most likely to rank
+// for the site's core search terms — carries its own keyword-rich copy
+// instead of a generic "Home | ..." title.
 export const metadata: Metadata = {
-  title: "Home",
+  title: {
+    absolute: "Anime Toys & Figures Online | Wholesale Anime Toys Supplier India",
+  },
+  description:
+    "Shop anime figures, Nendoroids, scale figures, statues, model kits, plushies, trading cards and anime stationery — 100% original merchandise. Also India's wholesale anime toys supplier for retailers and resellers, from Mumbai.",
+  alternates: { canonical: "/" },
 };
 
 // Rendered per-request (not statically prerendered at build time): stock
@@ -39,13 +49,21 @@ export default async function HomePage() {
   return (
     <>
       <section className={styles.hero}>
+        {/* Visually hidden but crawlable: pages need exactly one <h1>
+            stating what the page is about in plain language, and this one
+            hadn't had one at all. Kept out of the visual banner design
+            (which already communicates this) via .visually-hidden rather
+            than styled inline, so it helps search engines and screen
+            readers without changing how the hero looks. */}
+        <h1 className="visually-hidden">
+          Anime Toys &amp; Figures Online Store — Wholesale Anime Toys &amp; Stationery Supplier in India
+        </h1>
         <div className={styles.heroBanner}>
           <Image
             src="/hero-banner.jpg"
             alt="One Piece collection now in stock — Anime & Toy Universe"
             fill
             style={{ objectFit: "cover" }}
-            unoptimized
             priority
           />
         </div>

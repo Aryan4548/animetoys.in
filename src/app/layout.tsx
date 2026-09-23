@@ -65,7 +65,7 @@ const organizationJsonLd = {
       areaServed: "IN",
     },
   ],
-  sameAs: [],
+  sameAs: [SITE_INFO.instagramUrl],
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

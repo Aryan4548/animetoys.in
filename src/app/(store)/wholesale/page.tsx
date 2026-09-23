@@ -1,114 +1,69 @@
-"use client";
+import type { Metadata } from "next";
+import { safeJsonLd } from "@/lib/jsonLd";
+import WholesaleForm from "./WholesaleForm";
 
-import { useState } from "react";
+export const metadata: Metadata = {
+  title: "Wholesale Anime Toys & Stationery Supplier in India",
+  description:
+    "Anime & Toy Universe is a wholesale supplier of anime toys, figures and anime stationery based in Mumbai, India. Bulk pricing, 100% original merchandise and worldwide shipping for retailers and resellers — apply for a wholesale account.",
+  alternates: { canonical: "/wholesale" },
+};
 
-const emptyForm = {
-  businessName: "",
-  contactName: "",
-  email: "",
-  phone: "",
-  country: "",
-  city: "",
-  businessType: "",
-  website: "",
-  instagram: "",
-  monthlyOrderVolume: "",
-  message: "",
+// FAQPage structured data: search engines can surface these directly as
+// rich results, and the questions themselves double as extra on-page
+// keyword coverage for "wholesale anime toys" / "wholesale anime
+// stationery" style searches.
+const faqJsonLd = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "Do you supply anime toys and figures wholesale in India?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes — Anime & Toy Universe is a Mumbai-based wholesale supplier of anime toys, action figures, Nendoroids, scale figures, statues, model kits and plushies, with 100% original merchandise and low-margin pricing for retailers and resellers.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Do you also do wholesale anime stationery?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes — alongside figures and toys, we supply wholesale anime stationery and accessories such as keychains, stickers and other everyday anime merchandise, sold under the same bulk pricing terms.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Who can apply for a wholesale account?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Retail stores, online resellers and gift shops anywhere in the world can apply. Submit the wholesale application with your business details and expected monthly order volume, and our team will review it.",
+      },
+    },
+  ],
 };
 
 export default function WholesalePage() {
-  const [form, setForm] = useState(emptyForm);
-  const [status, setStatus] = useState<"idle" | "loading" | "done" | "error">("idle");
-  const [error, setError] = useState("");
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    setStatus("loading");
-    setError("");
-    try {
-      const res = await fetch("/api/wholesale", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, productCategories: [] }),
-      });
-      const data = await res.json();
-      if (!res.ok) {
-        setError(data.error || "Could not submit application.");
-        setStatus("error");
-        return;
-      }
-      setStatus("done");
-      setForm(emptyForm);
-    } catch {
-      setStatus("error");
-    }
-  }
-
   return (
     <div className="container section" style={{ maxWidth: 620 }}>
+      {/* eslint-disable-next-line react/no-danger */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(faqJsonLd) }} />
+
       <div className="section-eyebrow">For Retailers &amp; Resellers</div>
-      <h1 style={{ fontSize: 28, marginBottom: 8 }}>Wholesale Application</h1>
+      <h1 style={{ fontSize: 28, marginBottom: 8 }}>Wholesale Anime Toys &amp; Stationery Supplier</h1>
+      <p style={{ color: "var(--color-ink-soft)", marginBottom: 16 }}>
+        Anime &amp; Toy Universe is a wholesale supplier of anime toys, figures and anime stationery, operating out
+        of Mumbai, India. We supply retailers and online resellers worldwide with 100% original merchandise —
+        action figures, Nendoroids, scale figures, statues, model kits, plushies, trading cards and anime
+        stationery — at low-margin, bulk wholesale pricing.
+      </p>
       <p style={{ color: "var(--color-ink-soft)", marginBottom: 24 }}>
-        Partner with Anime &amp; Toy Universe — get bulk pricing, a wide product range, reliable supply and dedicated
-        support. Apply below and our team will review your application.
+        Partner with us for bulk pricing, a wide product range across anime toys and anime stationery, reliable
+        supply and dedicated support. Apply below and our team will review your wholesale application.
       </p>
 
-      {status === "done" ? (
-        <div className="card" style={{ padding: 20, background: "#dcfce7", borderColor: "#86efac" }}>
-          Thanks! Your application has been received. We&apos;ll be in touch after review.
-        </div>
-      ) : (
-        <form onSubmit={handleSubmit}>
-          <div className="form-field">
-            <label>Business Name</label>
-            <input required value={form.businessName} onChange={(e) => setForm({ ...form, businessName: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Contact Name</label>
-            <input required value={form.contactName} onChange={(e) => setForm({ ...form, contactName: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Email</label>
-            <input type="email" required value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Phone</label>
-            <input required value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Country</label>
-            <input required value={form.country} onChange={(e) => setForm({ ...form, country: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>City</label>
-            <input required value={form.city} onChange={(e) => setForm({ ...form, city: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Business Type</label>
-            <input required placeholder="e.g. Retail store, Online reseller" value={form.businessType} onChange={(e) => setForm({ ...form, businessType: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Website (optional)</label>
-            <input value={form.website} onChange={(e) => setForm({ ...form, website: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Instagram (optional)</label>
-            <input value={form.instagram} onChange={(e) => setForm({ ...form, instagram: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Estimated Monthly Order Volume</label>
-            <input required placeholder="e.g. 50-100 units" value={form.monthlyOrderVolume} onChange={(e) => setForm({ ...form, monthlyOrderVolume: e.target.value })} />
-          </div>
-          <div className="form-field">
-            <label>Message (optional)</label>
-            <textarea rows={4} value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} />
-          </div>
-          {error && <p className="form-error" style={{ marginBottom: 12 }}>{error}</p>}
-          <button type="submit" className="btn btn-primary" disabled={status === "loading"}>
-            {status === "loading" ? "Submitting..." : "Submit Application"}
-          </button>
-        </form>
-      )}
+      <WholesaleForm />
     </div>
   );
 }

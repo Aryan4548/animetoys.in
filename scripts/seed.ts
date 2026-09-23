@@ -24,6 +24,7 @@ const CATEGORIES = [
   "Plushies",
   "Trading Cards",
   "Accessories",
+  "Anime Stationery",
 ];
 
 const BRANDS = [
@@ -86,6 +87,10 @@ const PRODUCTS: DemoProduct[] = [
   { name: "One Piece — Trading Card Booster Box", category: "Trading Cards", brand: "Bandai", series: "One Piece", character: "", price: 5999, mrp: 6499, stock: 35, newArrival: true },
   { name: "Demon Slayer Acrylic Keychain Set", category: "Accessories", brand: "Aniplex", series: "Demon Slayer", character: "", price: 1499, mrp: 1799, stock: 60 },
   { name: "Totoro — Plushie", category: "Plushies", brand: "Taito", series: "My Neighbor Totoro", character: "Totoro", price: 2999, mrp: 3499, stock: 45, bestSeller: true },
+  { name: "Demon Slayer Acrylic Notebook & Stationery Set", category: "Anime Stationery", brand: "Aniplex", series: "Demon Slayer", character: "", price: 699, mrp: 899, stock: 80, newArrival: true },
+  { name: "One Piece Sticker Pack (50 pcs)", category: "Anime Stationery", brand: "Bandai", series: "One Piece", character: "", price: 249, mrp: 349, stock: 150, bestSeller: true },
+  { name: "Jujutsu Kaisen Pen & Pencil Set", category: "Anime Stationery", brand: "Banpresto", series: "Jujutsu Kaisen", character: "", price: 499, mrp: 649, stock: 60 },
+  { name: "Attack on Titan Acrylic Keychain & Stationery Bundle", category: "Anime Stationery", brand: "Kotobukiya", series: "Attack on Titan", character: "", price: 599, mrp: 799, stock: 55, newArrival: true },
 ];
 
 async function main() {
