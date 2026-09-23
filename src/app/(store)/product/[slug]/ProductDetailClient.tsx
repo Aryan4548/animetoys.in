@@ -210,7 +210,7 @@ export default function ProductDetailClient({ product, rating }: { product: Full
     <div className={styles.grid}>
       <div className={styles.gallery}>
         <div className={styles.mainImage}>
-          <Image src={images[activeImage]} alt={product.name} fill style={{ objectFit: "cover" }} unoptimized priority />
+          <Image src={images[activeImage]} alt={product.name} fill style={{ objectFit: "contain" }} unoptimized priority />
           <button type="button" className={styles.expandBtn} onClick={() => setLightboxOpen(true)} aria-label="View full size image">
             <IconExpand />
           </button>
@@ -229,7 +229,7 @@ export default function ProductDetailClient({ product, rating }: { product: Full
                   className={`${styles.thumb} ${i === activeImage ? styles.thumbActive : ""}`}
                   onClick={() => setActiveImage(i)}
                 >
-                  <Image src={img} alt="" width={64} height={64} unoptimized style={{ objectFit: "cover", width: "100%", height: "100%" }} />
+                  <Image src={img} alt="" width={64} height={64} unoptimized style={{ objectFit: "contain", width: "100%", height: "100%" }} />
                 </button>
               ))}
             </div>
