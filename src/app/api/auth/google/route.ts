@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import crypto from "crypto";
-import { getGoogleOAuthConfig } from "@/lib/googleOAuth";
+import { getGoogleOAuthConfig, getSiteUrl } from "@/lib/googleOAuth";
 
 // Short-lived, httpOnly — read back once in the callback and deleted there.
 const STATE_COOKIE = "google_oauth_state";
@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
   try {
     config = getGoogleOAuthConfig();
   } catch {
-    const url = new URL("/login", req.url);
+    const url = new URL("/login", getSiteUrl());
     url.searchParams.set("error", "google_not_configured");
     return NextResponse.redirect(url);
   }

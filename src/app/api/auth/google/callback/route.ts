@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { jwtVerify, createRemoteJWKSet } from "jose";
 import { connectDB } from "@/lib/db";
 import User from "@/models/User";
-import { getGoogleOAuthConfig } from "@/lib/googleOAuth";
+import { getGoogleOAuthConfig, getSiteUrl } from "@/lib/googleOAuth";
 import { signSession, sessionCookieOptions, SESSION_COOKIE } from "@/lib/auth";
 import { mergeGuestCartIntoUser } from "@/lib/cartMerge";
 
@@ -14,8 +14,8 @@ const NEXT_COOKIE = "google_oauth_next";
 // below actually came from Google instead of just trusting it blindly.
 const GOOGLE_JWKS = createRemoteJWKSet(new URL("https://www.googleapis.com/oauth2/v3/certs"));
 
-function redirectWithError(req: NextRequest, reason: string) {
-  const loginUrl = new URL("/login", req.url);
+function redirectWithError(reason: string) {
+  const loginUrl = new URL("/login", getSiteUrl());
   loginUrl.searchParams.set("error", reason);
   const res = NextResponse.redirect(loginUrl);
   res.cookies.delete(STATE_COOKIE);
@@ -32,16 +32,16 @@ export async function GET(req: NextRequest) {
   const cookieState = req.cookies.get(STATE_COOKIE)?.value;
   const next = req.cookies.get(NEXT_COOKIE)?.value || "/account";
 
-  if (errorParam) return redirectWithError(req, "google_denied");
+  if (errorParam) return redirectWithError("google_denied");
   if (!code || !state || !cookieState || state !== cookieState) {
-    return redirectWithError(req, "google_state_mismatch");
+    return redirectWithError("google_state_mismatch");
   }
 
   let config;
   try {
     config = getGoogleOAuthConfig();
   } catch {
-    return redirectWithError(req, "google_not_configured");
+    return redirectWithError("google_not_configured");
   }
 
   try {
@@ -56,10 +56,10 @@ export async function GET(req: NextRequest) {
         grant_type: "authorization_code",
       }),
     });
-    if (!tokenRes.ok) return redirectWithError(req, "google_token_exchange_failed");
+    if (!tokenRes.ok) return redirectWithError("google_token_exchange_failed");
 
     const tokenData = (await tokenRes.json()) as { id_token?: string };
-    if (!tokenData.id_token) return redirectWithError(req, "google_token_exchange_failed");
+    if (!tokenData.id_token) return redirectWithError("google_token_exchange_failed");
 
     const { payload } = await jwtVerify(tokenData.id_token, GOOGLE_JWKS, {
       issuer: ["https://accounts.google.com", "accounts.google.com"],
@@ -71,7 +71,7 @@ export async function GET(req: NextRequest) {
     const emailVerified = payload.email_verified as boolean | undefined;
     const name = (payload.name as string | undefined) || email?.split("@")[0] || "Anime Fan";
 
-    if (!email || !emailVerified) return redirectWithError(req, "google_email_unverified");
+    if (!email || !emailVerified) return redirectWithError("google_email_unverified");
 
     await connectDB();
 
@@ -87,7 +87,7 @@ export async function GET(req: NextRequest) {
         user = new User({ name, email, googleId, role: "customer" });
       }
     }
-    if (!user.isActive) return redirectWithError(req, "google_account_disabled");
+    if (!user.isActive) return redirectWithError("google_account_disabled");
 
     user.lastLoginAt = new Date();
     await user.save();
@@ -101,7 +101,7 @@ export async function GET(req: NextRequest) {
       role: user.role,
     });
 
-    const dest = new URL(next.startsWith("/") ? next : "/account", req.url);
+    const dest = new URL(next.startsWith("/") ? next : "/account", getSiteUrl());
     const res = NextResponse.redirect(dest);
     res.cookies.set(SESSION_COOKIE, token, sessionCookieOptions());
     res.cookies.delete(STATE_COOKIE);
@@ -109,6 +109,6 @@ export async function GET(req: NextRequest) {
     return res;
   } catch (err) {
     console.error("Google OAuth callback error:", err);
-    return redirectWithError(req, "google_auth_failed");
+    return redirectWithError("google_auth_failed");
   }
 }
