@@ -3,6 +3,7 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { safeJsonLd } from "@/lib/jsonLd";
 import { SITE_INFO } from "@/lib/siteInfo";
+import PageLoader from "@/components/layout/PageLoader";
 
 // A bold, rounded display face for the logo wordmark, nav and headings —
 // matches the friendly/premium collector-brand look. Loaded only for the
@@ -80,6 +81,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         {/* eslint-disable-next-line react/no-danger */}
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJsonLd(organizationJsonLd) }} />
+        <PageLoader />
         {children}
       </body>
     </html>
