@@ -15,6 +15,7 @@ interface Stats {
   pendingWholesale: number;
   unreadMessages: number;
   totalRevenue: number;
+  onlineVisitorCount: number;
   recentOrders: Array<{ _id: string; orderNumber: string; status: string; total: number; createdAt: string }>;
 }
 
@@ -29,6 +30,7 @@ export default function AdminDashboardPage() {
 
   const cards = stats
     ? [
+        { label: "Online Now", value: stats.onlineVisitorCount, sub: "live visitors", href: "/admin/visitors" },
         { label: "Total Revenue", value: formatINR(stats.totalRevenue), href: "/admin/orders" },
         { label: "Total Orders", value: stats.totalOrders, sub: `${stats.pendingOrders} pending`, href: "/admin/orders" },
         { label: "Products", value: stats.publishedProducts, sub: `${stats.totalProducts} total`, href: "/admin/products" },

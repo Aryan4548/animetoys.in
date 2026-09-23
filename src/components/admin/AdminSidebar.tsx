@@ -41,6 +41,13 @@ const NAV = [
       { href: "/admin/newsletter", label: "Newsletter" },
     ],
   },
+  {
+    section: "Monitoring",
+    links: [
+      { href: "/admin/visitors", label: "Live Visitors" },
+      { href: "/admin/blocked-ips", label: "Blocked IPs" },
+    ],
+  },
   { section: "System", links: [{ href: "/admin/settings", label: "Settings" }] },
 ];
 
