@@ -8,6 +8,7 @@ import Category from "@/models/Category";
 import { ProductGrid } from "@/components/product/ProductCard";
 import type { ProductListItem, CategoryItem } from "@/types";
 import { SITE_INFO } from "@/lib/siteInfo";
+import HeroVideo from "@/components/home/HeroVideo";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -41,9 +42,10 @@ export default async function HomePage() {
       <section className={styles.hero}>
         <div className={styles.heroBanner}>
           {/* Base image: always in the DOM as the poster / instant paint
-              while the video loads, and as the fallback shown instead of
-              the video for prefers-reduced-motion (see .heroVideo in
-              page.module.css). */}
+              while the video loads, and as the fallback shown on mobile
+              and for prefers-reduced-motion (see HeroVideo — it only
+              mounts the <video> on desktop-width screens, so mobile never
+              even requests hero-video.mp4). */}
           <Image
             src="/hero-banner.jpg"
             alt="One Piece collection now in stock — Anime & Toy Universe"
@@ -52,18 +54,7 @@ export default async function HomePage() {
             unoptimized
             priority
           />
-          <video
-            className={styles.heroVideo}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-            poster="/hero-banner.jpg"
-            aria-hidden="true"
-          >
-            <source src="/hero-video.mp4" type="video/mp4" />
-          </video>
+          <HeroVideo />
         </div>
       </section>
 
