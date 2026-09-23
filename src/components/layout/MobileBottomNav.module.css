@@ -1,0 +1,43 @@
+.nav {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .nav {
+    display: flex;
+    /* `position: sticky` here never actually stuck: `body` has
+       `overflow-x: hidden` (see globals.css), and any ancestor with
+       overflow other than `visible` — even just on the x-axis — becomes
+       the sticky containing block in a way that breaks vertical
+       stickiness in Chrome/Safari. The nav just sat in normal document
+       flow as the very last element on the page, only becoming visible
+       once you scrolled all the way past the footer. `fixed` pins it to
+       the viewport unconditionally, which is what a bottom tab bar
+       needs. `body`'s bottom padding (globals.css) keeps page content
+       from being hidden behind it now that it's out of the flow. */
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 40;
+    background: #fff;
+    border-top: 1px solid var(--color-border);
+    padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+    justify-content: space-around;
+  }
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-ink-soft);
+  padding: 4px 10px;
+}
+
+.itemActive {
+  color: var(--color-accent-pink);
+}

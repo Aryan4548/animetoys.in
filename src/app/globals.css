@@ -1,34 +1,24 @@
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-html {
-  height: 100%;
-}
-
-html,
-body {
-  max-width: 100vw;
-  overflow-x: hidden;
-}
-
-body {
-  min-height: 100%;
-  display: flex;
-  flex-direction: column;
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  --color-bg: #f7f6f3;
+  --color-surface: #ffffff;
+  --color-ink: #14141a;
+  --color-ink-soft: #4a4a52;
+  --color-header: #0d0d12;
+  --color-border: #e7e5df;
+  --color-accent-pink: #ff2f6d;
+  --color-accent-red: #e0272f;
+  --color-accent-yellow: #ffc627;
+  --color-accent-blue: #2f6dff;
+  --color-accent-green: #16a34a;
+  --color-danger: #d92d20;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --shadow-card: 0 2px 10px rgba(20, 20, 26, 0.06);
+  --shadow-pop: 0 12px 30px rgba(20, 20, 26, 0.14);
+  --max-width: 1280px;
+  --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-display: var(--font-poppins, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif);
 }
 
 * {
@@ -37,13 +27,341 @@ body {
   margin: 0;
 }
 
+html {
+  height: 100%;
+  /* Horizontal-scroll guard lives on `html`, not `body`. It used to sit
+     on `body { overflow-x: hidden }` too, which quietly broke every
+     `position: sticky` element on the site (the header, and the mobile
+     bottom nav): any ancestor with overflow other than `visible` — even
+     only on the x-axis — becomes that element's sticky containing block,
+     and `body` doesn't independently scroll, so nothing ever actually
+     stuck. `html` is the real scrolling root here, so it can clip
+     horizontal overflow on its own without creating that problem. */
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 a {
   color: inherit;
   text-decoration: none;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.01em;
+  line-height: 1.05;
+  text-transform: uppercase;
+}
+
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  padding: 13px 26px;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: scale(0.97);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-primary {
+  background: var(--color-header);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  opacity: 0.88;
+}
+
+.btn-outline {
+  background: transparent;
+  border-color: var(--color-header);
+  color: var(--color-header);
+}
+
+.btn-outline:hover {
+  background: var(--color-header);
+  color: #fff;
+}
+
+.btn-accent {
+  background: var(--color-accent-pink);
+  color: #fff;
+}
+
+.btn-accent:hover {
+  opacity: 0.9;
+}
+
+.btn-blue {
+  background: var(--color-accent-blue);
+  color: #fff;
+}
+
+.btn-blue:hover {
+  opacity: 0.9;
+}
+
+.btn-sm {
+  padding: 9px 16px;
+  font-size: 13px;
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.card {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-card);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.badge-new {
+  background: var(--color-accent-blue);
+  color: #fff;
+}
+
+.badge-preorder {
+  background: var(--color-accent-yellow);
+  color: var(--color-ink);
+}
+
+.badge-lowstock {
+  background: #fff1e6;
+  color: #b45309;
+}
+
+.badge-outofstock {
+  background: #fee2e2;
+  color: var(--color-danger);
+}
+
+.badge-instock {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.badge-discount {
+  background: var(--color-accent-red);
+  color: #fff;
+}
+
+/* Top/bottom only (not shorthand `padding: 56px 0`) — pages that combine
+   this with .container on the same element (className="container section")
+   would otherwise have their left/right padding zeroed out, since a 0/0
+   here wins the cascade over .container's `padding: 0 20px` (same
+   specificity, declared later in this file). That was stripping side
+   padding sitewide on mobile for blog, policies, search, wholesale,
+   contact, preorder, about and faq pages. */
+.section {
+  padding-top: 56px;
+  padding-bottom: 56px;
+}
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-eyebrow {
+  color: var(--color-accent-pink);
+  font-weight: 700;
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: 16px;
+}
+
+.form-field label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+  font-family: inherit;
+  font-size: 15px;
+  padding: 11px 14px;
+  border-radius: var(--radius-sm);
+  border: 1.5px solid var(--color-border);
+  background: #fff;
+  color: var(--color-ink);
+}
+
+.form-field input:focus,
+.form-field select:focus,
+.form-field textarea:focus {
+  outline: none;
+  border-color: var(--color-header);
+}
+
+.form-error {
+  color: var(--color-danger);
+  font-size: 13px;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.table th {
+  text-align: left;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-ink-soft);
+  padding: 10px 12px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--color-border);
+  vertical-align: middle;
+}
+
+/* Admin tables (products, orders, customers, etc.) are wrapped directly in
+   a `.card` with no scroll container of their own. min-width keeps columns
+   from being crushed unreadable on a phone; the .card:has() rule then lets
+   that width scroll horizontally instead of forcing the whole page wider
+   (or, without this, the row just overflows the page and gets clipped). */
+.table {
+  min-width: 640px;
+}
+
+.card:has(.table) {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Reusable responsive grid helpers for admin forms/detail layouts that
+   need a fixed column ratio on desktop but a single stacked column on
+   narrow screens (plain inline `gridTemplateColumns: "2fr 1fr"` etc. can't
+   respond to a media query, so those spots use these classes instead). */
+.grid-2to1 {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.grid-2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.grid-3col {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .grid-2to1 {
+    grid-template-columns: 1fr;
+  }
+  .grid-3col {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  /* The mobile bottom nav (MobileBottomNav.module.css) is `position:
+     fixed` at this same breakpoint, so it's taken out of the page's
+     normal flow and would otherwise sit on top of whatever is at the
+     bottom of each page (typically the footer). This reserves matching
+     space so nothing ends up hidden behind it, on every page. */
+  body {
+    padding-bottom: calc(64px + env(safe-area-inset-bottom));
+  }
+}
+
+@media (max-width: 640px) {
+  .section {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+
+  .grid-2col,
+  .grid-3col {
+    grid-template-columns: 1fr;
   }
 }

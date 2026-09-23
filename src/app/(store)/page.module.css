@@ -1,0 +1,159 @@
+.hero {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  background: #fff;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* Full-bleed banner: the section has no `container` wrapper, so this
+   stretches edge-to-edge across the viewport. aspect-ratio matches the
+   source banner exactly (2243 / 701, a short ~3.2:1 wide-banner shape)
+   so the image is never cropped — height just scales down with width. */
+.heroBanner {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2243 / 701;
+  overflow: hidden;
+}
+
+/* Sits on top of the fallback <Image>, filling the same box. Hidden
+   under prefers-reduced-motion so people who've asked for less motion
+   just see the static banner image underneath instead. */
+.heroVideo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroVideo {
+    display: none;
+  }
+}
+
+/* Single-line, horizontally scrollable row at every breakpoint. Tiles
+   grow to fill the full row width when there's room (so desktop with
+   only a handful of categories doesn't leave a big empty gap), but
+   never shrink below their basis — once they no longer fit, the row
+   scrolls instead of squeezing tiles down or wrapping to a new line. */
+.categoryRow {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+  -webkit-overflow-scrolling: touch;
+}
+
+.categoryRow::-webkit-scrollbar {
+  display: none;
+}
+
+.categoryTile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  flex: 1 0 108px;
+  max-width: 160px;
+}
+
+.categoryCircle {
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #f1f0ec;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+}
+
+.categoryCircle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categoryTile span {
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.stripRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.stripCard {
+  position: relative;
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  min-height: 190px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 12px;
+  color: #fff;
+  overflow: hidden;
+}
+
+.stripCard h3 {
+  font-size: 26px;
+}
+
+.stripPreorder {
+  background:
+    linear-gradient(90deg, rgba(16, 16, 24, 0.92) 0%, rgba(16, 16, 24, 0.62) 42%, rgba(16, 16, 24, 0.1) 78%),
+    url("/preorder-banner.jpg") center right / cover no-repeat;
+}
+
+.stripWholesale {
+  background:
+    linear-gradient(90deg, rgba(16, 16, 24, 0.93) 0%, rgba(16, 16, 24, 0.72) 40%, rgba(16, 16, 24, 0.28) 78%),
+    url("/wholesale-banner.jpg") center right / cover no-repeat;
+}
+
+.stripCard p {
+  font-size: 13px;
+  color: #d6d6dd;
+  max-width: 320px;
+}
+
+.communityStrip {
+  background: var(--color-header);
+  color: #fff;
+  padding: 44px 0;
+  text-align: center;
+}
+
+.communityStrip h2 {
+  font-size: 30px;
+}
+
+.communityStrip p {
+  margin-top: 10px;
+  color: #b7b7c0;
+  font-size: 14px;
+}
+
+@media (max-width: 900px) {
+  .categoryTile {
+    flex-basis: 92px;
+  }
+  .stripRow {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .categoryRow {
+    gap: 10px;
+  }
+  .categoryTile {
+    flex-basis: 80px;
+  }
+}

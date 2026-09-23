@@ -1,0 +1,40 @@
+.wrap {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 48px 20px;
+}
+
+.card {
+  width: 100%;
+  max-width: 400px;
+  padding: 32px;
+}
+
+.card h1 {
+  font-size: 22px;
+  text-transform: none;
+  font-family: var(--font-body);
+  font-weight: 800;
+  margin-bottom: 6px;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: var(--color-ink-soft);
+  margin-bottom: 24px;
+}
+
+.footer {
+  margin-top: 18px;
+  font-size: 13px;
+  text-align: center;
+  color: var(--color-ink-soft);
+}
+
+.footer a {
+  font-weight: 700;
+  color: var(--color-ink);
+  text-decoration: underline;
+}

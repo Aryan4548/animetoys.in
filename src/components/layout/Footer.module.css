@@ -1,0 +1,155 @@
+.footer {
+  margin-top: 48px;
+  background: var(--color-header);
+  color: #cfcfd6;
+  padding: 44px 0 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+  gap: 32px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.mark {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-header);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+}
+
+.tagline {
+  font-size: 13px;
+  color: #9a9aa4;
+  max-width: 280px;
+  line-height: 1.5;
+}
+
+.heading {
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+}
+
+.linkList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.linkList a {
+  font-size: 13px;
+  color: #b7b7c0;
+}
+
+.linkList a:hover {
+  color: #fff;
+}
+
+.newsletterForm {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.newsletterForm input {
+  flex: 1;
+  background: #1c1c24;
+  border: 1px solid #33333d;
+  border-radius: 999px;
+  padding: 10px 14px;
+  color: #fff;
+  font-size: 13px;
+}
+
+.newsletterForm button {
+  background: var(--color-accent-pink);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 0 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.contactInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 14px;
+  font-size: 13px;
+  max-width: 280px;
+}
+
+.contactInfo a {
+  color: #b7b7c0;
+}
+
+.contactInfo a:hover {
+  color: #fff;
+}
+
+.contactInfo span {
+  color: #9a9aa4;
+  line-height: 1.5;
+}
+
+.social {
+  display: flex;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.social a {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 1px solid #33333d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.bottom {
+  margin-top: 32px;
+  padding-top: 20px;
+  border-top: 1px solid #24242c;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: #85858f;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+}

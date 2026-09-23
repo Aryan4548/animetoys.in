@@ -1,0 +1,407 @@
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--color-header);
+  color: #fff;
+}
+
+.topBar {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  /* Left/right padding is set explicitly here (not inherited from the
+     shared .container class) because this element also carries the
+     .topBar module class, and its shorthand `padding` would otherwise
+     zero out .container's horizontal padding when the two collide.
+     Left is tighter (logo sits close to the edge) and right is looser
+     (breathing room after the account/wishlist/cart icons). */
+  padding: 16px 32px 16px 8px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.logoMark {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: #fff;
+  color: var(--color-header);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+
+.logoText {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+  min-width: 0;
+}
+
+.logoTitle {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
+}
+
+.logoText small {
+  display: block;
+  font-family: var(--font-body);
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  color: #9a9aa8;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1;
+  max-width: 620px;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  background: #fff;
+  border: none;
+  border-radius: 999px;
+  padding: 5px 5px 5px 20px;
+  gap: 10px;
+  width: 100%;
+}
+
+.suggestions {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  color: var(--color-ink);
+  border-radius: 14px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.22);
+  padding: 6px;
+  z-index: 60;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.suggestionItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border-radius: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-body);
+}
+
+.suggestionItem:hover {
+  background: #f2f2f6;
+}
+
+.suggestionImg {
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.suggestionInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.suggestionName {
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.suggestionPrice {
+  font-size: 12px;
+  color: var(--color-ink-soft);
+}
+
+.suggestionSeeAll {
+  display: block;
+  width: 100%;
+  text-align: center;
+  padding: 10px 8px 6px;
+  font-size: 12.5px;
+  font-weight: 700;
+  color: var(--color-accent-blue);
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  border-top: 1px solid #eee;
+  margin-top: 4px;
+}
+
+.suggestionEmpty {
+  padding: 14px 10px;
+  font-size: 12.5px;
+  color: var(--color-ink-soft);
+  text-align: center;
+}
+
+.search svg {
+  color: #9c9ca8;
+  flex-shrink: 0;
+}
+
+.search input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  font-size: 14px;
+  outline: none;
+  padding: 9px 0;
+  min-width: 0;
+}
+
+.search input::placeholder {
+  color: #9c9ca8;
+}
+
+.searchBtn {
+  flex-shrink: 0;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--color-header);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.searchBtn:hover {
+  background: var(--color-accent-blue);
+}
+
+.iconRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-shrink: 0;
+  /* Pushes this group to the far right of .topBar regardless of how much
+     room .search actually uses — without this, once .search hits its
+     max-width cap, the leftover space just sits unused after the icons
+     instead of being consumed, leaving them stranded short of the edge. */
+  margin-left: auto;
+}
+
+.iconBtn {
+  position: relative;
+  display: flex;
+  color: #fff;
+}
+
+.iconCount {
+  position: absolute;
+  top: -7px;
+  right: -9px;
+  background: var(--color-accent-pink);
+  color: #fff;
+  font-size: 10px;
+  font-weight: 800;
+  border-radius: 999px;
+  min-width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 3px;
+}
+
+.nav {
+  border-top: 1px solid #24242c;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  padding: 12px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+
+.navList::-webkit-scrollbar {
+  display: none;
+}
+
+.navList a {
+  font-family: var(--font-display);
+  font-size: 13.5px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #dcdce3;
+  white-space: nowrap;
+  transition: color 0.15s ease;
+}
+
+.navList a:hover {
+  color: #fff;
+}
+
+.mobileOnly {
+  display: none;
+}
+
+.desktopOnly {
+  display: flex;
+}
+
+.hamburger {
+  display: none;
+  background: transparent;
+  border: none;
+  color: #fff;
+  padding: 6px;
+}
+
+@media (max-width: 900px) {
+  .desktopOnly {
+    display: none;
+  }
+  .mobileOnly {
+    display: flex;
+  }
+  .hamburger {
+    display: flex;
+  }
+  .nav {
+    display: none;
+  }
+  .topBar {
+    padding: 12px 16px;
+    gap: 12px;
+  }
+  .search {
+    display: none;
+  }
+  .searchWrap {
+    /* Search is hidden on mobile (it moves into the drawer instead), so
+       don't let this empty wrapper keep claiming flex-grow space — that's
+       harmless on its own, but paired with the logo below it used to be
+       enough to squeeze the account/wishlist/cart icons off the right
+       edge of the screen on narrow phones. */
+    flex: 0 0 auto;
+    max-width: none;
+  }
+  .logo {
+    /* The brand wordmark used to be flex-shrink: 0 (fine on desktop,
+       where there's room), which on a narrow phone forced the row wider
+       than the viewport and pushed .iconRow (account/wishlist/cart)
+       off-screen entirely instead of just wrapping or truncating. Letting
+       it shrink — and truncating the title with an ellipsis below —
+       keeps the icons guaranteed visible instead. */
+    flex-shrink: 1;
+    min-width: 0;
+    font-size: 16px;
+  }
+  .logoText small {
+    display: none;
+  }
+}
+
+.mobileSearchBar {
+  display: none;
+}
+
+.mobileSearchWrap {
+  position: relative;
+}
+
+@media (max-width: 900px) {
+  .mobileSearchWrap {
+    margin: 0 0 12px;
+  }
+  .mobileSearchBar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: #fff;
+    border: none;
+    border-radius: 999px;
+    padding: 4px 4px 4px 14px;
+  }
+  .mobileSearchBar svg {
+    color: #9c9ca8;
+    flex-shrink: 0;
+  }
+  .mobileSearchBar input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    color: var(--color-ink);
+    font-size: 14px;
+    outline: none;
+    padding: 8px 0;
+    min-width: 0;
+  }
+  .mobileSearchBar input::placeholder {
+    color: #9c9ca8;
+  }
+}
+
+.drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+}
+
+.drawerPanel {
+  width: 78%;
+  max-width: 320px;
+  background: var(--color-header);
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  overflow-y: auto;
+}
+
+.drawerBackdrop {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.drawerLink {
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 0;
+  border-bottom: 1px solid #24242c;
+}

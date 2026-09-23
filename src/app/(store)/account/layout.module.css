@@ -1,0 +1,51 @@
+/* Top/bottom only — see product page.module.css for why the shorthand
+   version zeroed out .container's side padding on mobile. */
+.wrap {
+  padding-top: 28px;
+  padding-bottom: 60px;
+  display: grid;
+  grid-template-columns: 220px 1fr;
+  gap: 28px;
+}
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.link {
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-ink-soft);
+}
+
+.linkActive {
+  background: var(--color-header);
+  color: #fff;
+}
+
+.logoutBtn {
+  margin-top: 12px;
+  text-align: left;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-danger);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (max-width: 800px) {
+  .wrap {
+    grid-template-columns: 1fr;
+  }
+  .sidebar {
+    flex-direction: row;
+    overflow-x: auto;
+  }
+}
