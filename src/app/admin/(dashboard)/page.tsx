@@ -16,6 +16,7 @@ interface Stats {
   unreadMessages: number;
   totalRevenue: number;
   onlineVisitorCount: number;
+  abandonedCartCount: number;
   recentOrders: Array<{ _id: string; orderNumber: string; status: string; total: number; createdAt: string }>;
 }
 
@@ -33,6 +34,7 @@ export default function AdminDashboardPage() {
         { label: "Online Now", value: stats.onlineVisitorCount, sub: "live visitors", href: "/admin/visitors" },
         { label: "Total Revenue", value: formatINR(stats.totalRevenue), href: "/admin/orders" },
         { label: "Total Orders", value: stats.totalOrders, sub: `${stats.pendingOrders} pending`, href: "/admin/orders" },
+        { label: "Abandoned Carts", value: stats.abandonedCartCount, sub: "1h+ inactive", href: "/admin/abandoned-carts" },
         { label: "Products", value: stats.publishedProducts, sub: `${stats.totalProducts} total`, href: "/admin/products" },
         { label: "Low Stock", value: stats.lowStockCount, sub: `${stats.outOfStockCount} out of stock`, href: "/admin/inventory" },
         { label: "Customers", value: stats.totalCustomers, href: "/admin/customers" },

@@ -6,10 +6,13 @@ import User from "@/models/User";
 import WholesaleApplication from "@/models/WholesaleApplication";
 import ContactMessage from "@/models/ContactMessage";
 import VisitorSession from "@/models/VisitorSession";
+import Cart from "@/models/Cart";
 import { handleApiError, isResponse, requireAdmin } from "@/lib/apiHelpers";
 
 // Kept in sync with /api/admin/visitors' definition of "online now".
 const ONLINE_WINDOW_MS = 60 * 1000;
+// Kept in sync with /api/admin/abandoned-carts' default window.
+const ABANDONED_CART_WINDOW_MS = 60 * 60 * 1000;
 
 export async function GET() {
   try {
@@ -31,6 +34,7 @@ export async function GET() {
       revenueAgg,
       recentOrders,
       onlineVisitorCount,
+      abandonedCartCount,
     ] = await Promise.all([
       Product.countDocuments({}),
       Product.countDocuments({ status: "published" }),
@@ -51,6 +55,10 @@ export async function GET() {
       ]),
       Order.find({}).sort({ createdAt: -1 }).limit(5).select("orderNumber status total createdAt").lean(),
       VisitorSession.countDocuments({ lastSeenAt: { $gte: new Date(Date.now() - ONLINE_WINDOW_MS) } }),
+      Cart.countDocuments({
+        "items.0": { $exists: true },
+        updatedAt: { $lte: new Date(Date.now() - ABANDONED_CART_WINDOW_MS) },
+      }),
     ]);
 
     return NextResponse.json({
@@ -66,6 +74,7 @@ export async function GET() {
       totalRevenue: revenueAgg[0]?.total || 0,
       recentOrders,
       onlineVisitorCount,
+      abandonedCartCount,
     });
   } catch (err) {
     return handleApiError(err);

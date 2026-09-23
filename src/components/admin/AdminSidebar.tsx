@@ -20,6 +20,7 @@ const NAV = [
     section: "Sales",
     links: [
       { href: "/admin/orders", label: "Orders" },
+      { href: "/admin/abandoned-carts", label: "Abandoned Carts" },
       { href: "/admin/customers", label: "Customers" },
       { href: "/admin/preorders", label: "Preorders" },
       { href: "/admin/wholesale", label: "Wholesale" },
