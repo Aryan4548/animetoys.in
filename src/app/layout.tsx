@@ -35,6 +35,17 @@ export const metadata: Metadata = {
     title: "Anime & Toy Universe — Good Toys, Brighter Days",
     description:
       "Wholesale supplier of anime figures, gifts and toys, operating from Mumbai. 100% original merchandise at low-margin, competitive pricing.",
+    images: [{ url: "/logo-full.png", width: 600, height: 468, alt: "Anime & Toy Universe" }],
+  },
+  // Explicit icon config (on top of the auto-detected src/app/favicon.ico)
+  // so both the browser tab and Google's search-result favicon resolve to
+  // the real brand mark rather than a generic/default icon.
+  icons: {
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo-square.png", type: "image/png", sizes: "512x512" },
+    ],
+    apple: "/logo-square.png",
   },
   // Proves ownership of animetoys.in to Google Search Console (renders as
   // <meta name="google-site-verification" content="..." /> in <head>) so
@@ -52,7 +63,11 @@ const organizationJsonLd = {
   description:
     "Wholesale supplier of anime figures, gifts and toys operating from Mumbai, India — supplying retailers and resellers with 100% original merchandise at competitive, low-margin pricing.",
   url: siteUrl,
-  logo: `${siteUrl}/logo-mark.svg`,
+  // Google's structured-data logo requirements want a square raster image
+  // (SVG isn't reliably supported for the Organization logo shown in search
+  // results/Knowledge Panels), so this points at a real, square PNG of the
+  // brand mark rather than the old placeholder logo-mark.svg.
+  logo: `${siteUrl}/logo-square.png`,
   email: SITE_INFO.email,
   telephone: SITE_INFO.phoneHref,
   address: {
