@@ -18,10 +18,11 @@
 }
 
 /* Single-line, horizontally scrollable row at every breakpoint. Tiles
-   grow to fill the full row width when there's room (so desktop with
-   only a handful of categories doesn't leave a big empty gap), but
-   never shrink below their basis — once they no longer fit, the row
-   scrolls instead of squeezing tiles down or wrapping to a new line. */
+   keep a small, fixed size regardless of how many categories there are —
+   they used to grow to fill the row on a sparse list, which made a
+   couple of categories balloon up to 160px (bigger than the hero banner
+   on mobile). Once there are enough tiles to fill the row, it scrolls
+   instead of squeezing tiles down or wrapping to a new line. */
 .categoryRow {
   display: flex;
   gap: 14px;
@@ -39,10 +40,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   text-align: center;
-  flex: 1 0 108px;
-  max-width: 160px;
+  flex: 0 0 76px;
+  max-width: 76px;
 }
 
 .categoryCircle {
@@ -125,7 +126,8 @@
 
 @media (max-width: 900px) {
   .categoryTile {
-    flex-basis: 92px;
+    flex-basis: 68px;
+    max-width: 68px;
   }
   .stripRow {
     grid-template-columns: 1fr;
@@ -137,6 +139,10 @@
     gap: 10px;
   }
   .categoryTile {
-    flex-basis: 80px;
+    flex-basis: 62px;
+    max-width: 62px;
+  }
+  .categoryTile span {
+    font-size: 11px;
   }
 }

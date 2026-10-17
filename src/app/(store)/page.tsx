@@ -79,8 +79,8 @@ export default async function HomePage() {
                     <Image
                       src={c.image || "/placeholder-product.svg"}
                       alt={c.name}
-                      width={120}
-                      height={120}
+                      width={76}
+                      height={76}
                       unoptimized
                     />
                   </div>

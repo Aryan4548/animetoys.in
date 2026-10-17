@@ -4,6 +4,15 @@
   z-index: 50;
   background: var(--color-header);
   color: #fff;
+  transition: transform 0.25s ease;
+}
+
+/* Slid fully off-screen on scroll-down (see Header.tsx's scroll listener),
+   then transform resets to 0 on scroll-up — stays in the sticky layout
+   flow throughout so it doesn't leave a gap or require the page below to
+   shift. */
+.headerHidden {
+  transform: translateY(-100%);
 }
 
 .topBar {

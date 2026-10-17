@@ -29,8 +29,41 @@ export default function Header() {
   const [suggestions, setSuggestions] = useState<ProductListItem[]>([]);
   const [suggestOpen, setSuggestOpen] = useState(false);
   const [suggestLoading, setSuggestLoading] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastScrollY = useRef(0);
   const router = useRouter();
+
+  // Slide the header away on scroll-down and bring it back on scroll-up,
+  // so it doesn't eat screen space while reading down the page but is
+  // always one upward swipe away. Small jitters (sub-6px deltas, e.g. from
+  // momentum scrolling) are ignored so the header doesn't flicker, and it
+  // always stays visible near the very top of the page regardless of
+  // direction.
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+    function onScroll() {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY.current;
+      if (currentY < 80) {
+        setHidden(false);
+      } else if (delta > 6) {
+        setHidden(true);
+      } else if (delta < -6) {
+        setHidden(false);
+      }
+      lastScrollY.current = currentY;
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  // Never hide the header while the mobile drawer is open — the drawer's
+  // own close button lives inside it, so sliding it away would strand the
+  // user with no way to close it via the header.
+  useEffect(() => {
+    if (drawerOpen) setHidden(false);
+  }, [drawerOpen]);
 
   // Live "recommended products" dropdown: as soon as the visitor has typed
   // a couple of characters, fetch a handful of matching products (debounced
@@ -125,7 +158,7 @@ export default function Header() {
   }
 
   return (
-    <header className={styles.header}>
+    <header className={`${styles.header} ${hidden ? styles.headerHidden : ""}`}>
       <div className={`container ${styles.topBar}`}>
         <button
           className={styles.hamburger}
