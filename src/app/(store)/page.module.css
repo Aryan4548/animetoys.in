@@ -17,12 +17,15 @@
   overflow: hidden;
 }
 
-/* Single-line, horizontally scrollable row at every breakpoint. Tiles
-   keep a small, fixed size regardless of how many categories there are —
-   they used to grow to fill the row on a sparse list, which made a
-   couple of categories balloon up to 160px (bigger than the hero banner
-   on mobile). Once there are enough tiles to fill the row, it scrolls
-   instead of squeezing tiles down or wrapping to a new line. */
+/* Single-line, horizontally scrollable row at every breakpoint. On
+   desktop, tiles grow to fill the row width when there's room (so a
+   handful of categories doesn't leave a big empty gap) — that's the
+   original, larger desktop look. Below 900px that growth is turned off
+   and tiles get a small, fixed size instead: letting them grow on a
+   narrow phone with only a couple of categories made them balloon up to
+   160px, bigger than the hero banner. Once there are enough tiles to
+   fill the row, it scrolls instead of squeezing tiles down or wrapping
+   to a new line. */
 .categoryRow {
   display: flex;
   gap: 14px;
@@ -40,10 +43,10 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   text-align: center;
-  flex: 0 0 76px;
-  max-width: 76px;
+  flex: 1 0 108px;
+  max-width: 160px;
 }
 
 .categoryCircle {
@@ -126,7 +129,9 @@
 
 @media (max-width: 900px) {
   .categoryTile {
-    flex-basis: 68px;
+    /* No longer grows on mobile/tablet — a fixed, compact size regardless
+       of how few categories there are (see note on .categoryRow above). */
+    flex: 0 0 68px;
     max-width: 68px;
   }
   .stripRow {
