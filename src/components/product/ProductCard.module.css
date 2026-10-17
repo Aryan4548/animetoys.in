@@ -138,7 +138,6 @@
 .footerRow {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   margin-top: 8px;
   gap: 8px;
 }
@@ -155,6 +154,11 @@
   border: none;
   cursor: pointer;
   flex-shrink: 0;
+  /* Was pushed right by .footerRow's space-between — moved onto the
+     button itself so it still lands on the right when it's the row's
+     only child (preorder cards, which skip the status badge next to it
+     since "Preorder" is already shown as a badge on the image above). */
+  margin-left: auto;
 }
 
 .cartBtn:disabled {

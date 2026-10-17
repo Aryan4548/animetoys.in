@@ -101,15 +101,17 @@ export default function ProductCard({ product }: { product: ProductListItem }) {
             </div>
           ) : (
             <>
-              <span className={`badge badge-${inventoryStatus.toLowerCase().replace(/_/g, "")}`}>
-                {product.isPreorder
-                  ? "Preorder"
-                  : outOfStock
-                  ? "Out of stock"
-                  : inventoryStatus === "LOW_STOCK"
-                  ? "Low stock"
-                  : "In stock"}
-              </span>
+              {/* Preorder already has its own badge on the product image
+                  above (see .badges) — repeating "Preorder" here too just
+                  duplicated the same label twice on one small card, so this
+                  stock-status pill is skipped for preorder items and the
+                  cart button (pushed right via .cartBtn's margin-left:
+                  auto) stands alone. */}
+              {!product.isPreorder && (
+                <span className={`badge badge-${inventoryStatus.toLowerCase().replace(/_/g, "")}`}>
+                  {outOfStock ? "Out of stock" : inventoryStatus === "LOW_STOCK" ? "Low stock" : "In stock"}
+                </span>
+              )}
               <button className={styles.cartBtn} onClick={handleAdd} disabled={outOfStock || adding} aria-label="Add to cart">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M3 4h2l2.4 12.2a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L21 8H6" strokeLinecap="round" strokeLinejoin="round" />
